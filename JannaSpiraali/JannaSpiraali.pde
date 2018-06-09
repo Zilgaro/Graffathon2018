@@ -2,6 +2,7 @@ import peasy.*;
 
 PeasyCam cam;
 int i;
+int scene = 0;
 
 int CANVAS_WIDTH = 1920;
 int CANVAS_HEIGHT = 1080;
@@ -20,7 +21,7 @@ void setup() {
   cam.setMaximumDistance(500);
 }
 
-void draw() {
+void draw1() {
   background(0,0,0);
   float secs = millis() / 1000.0;
   
@@ -36,4 +37,11 @@ void draw() {
       box(100);
     }
     i++;
+}
+
+void draw() {
+  if (scene == 0) {
+    draw1();
+  }
+  
 }
