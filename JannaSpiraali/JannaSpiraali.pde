@@ -1,3 +1,12 @@
+import moonlander.library.*;
+
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
+
 import peasy.*;
 
 PeasyCam cam;
@@ -8,11 +17,13 @@ float r = 250;
 int CANVAS_WIDTH = 1920;
 int CANVAS_HEIGHT = 1080;
 
+Moonlander moonlander;
 
 void settings() {
   size(CANVAS_WIDTH,CANVAS_HEIGHT,P3D);
 }
 void setup() {
+  moonlander = Moonlander.initWithSoundtrack(this, "data/DestinyDay.mp3", 120, 3);
   noiseSeed(0);
   colorMode(HSB, 360, 100, 100);
   frameRate(60);
@@ -20,9 +31,12 @@ void setup() {
   cam = new PeasyCam(this, 100);
   cam.setMinimumDistance(50);
   cam.setMaximumDistance(500);
+  moonlander.start();
 }
 
-void drawVerner() {
+void drawVerner(int now) {
+  
+  double value = moonlander.getValue("track1");
   background(0,0,0);
   //lights();
   stroke(90,90,110);
@@ -31,10 +45,7 @@ void drawVerner() {
   float secs = millis() / 1000.0;
   for (int i = -6; i < 7; i++) {
     for (int j = -6 + counter; j < 7 - counter; j++) {
-      float basicA = frameCount*0.01f;
-      float angle = basicA+i*0.1f;
-      float x = cos(angle)*r;
-      float y = sin(angle)*r;
+      if (i != -6) {
       pushMatrix();
       translate(j*50,i*50,0);
       if ((secs > 3.6)&&(i == -6)) {
@@ -51,12 +62,10 @@ void drawVerner() {
       //}
       sphere(20);
       popMatrix();
+      }
     }
     for (int j = 7 - counter; j > -6 + counter; j--) {
-      float basicA = frameCount*0.01f;
-      float angle = basicA+i*0.1f;
-      float x = cos(angle)*r;
-      float y = sin(angle)*r;
+      if (i != -6) {
       pushMatrix();
       translate(j*(-50) + 50,i*-50,0);
       // j == -5 saa yhden pallon alariviltä scaleemaan!!!
@@ -88,9 +97,14 @@ void drawVerner() {
       sphere(20);
       popMatrix();
     }
-  counter++;
- }      
-  
+    }
+    counter++;
+    // pitäisi olla 11.3 sec aloituksesta koko kierros
+    if (secs > 12 && secs < 23.3) {
+      
+      rotate(-frameCount*0.02);
+    }
+ } 
 }
 
 void draw1() {
@@ -113,15 +127,17 @@ void draw1() {
       box(100);
     }
     i_global++;
-}
+} 
 
 void draw() {
+  moonlander.update();
   if (scene == 0) {
     draw1();
   }
   
   if (scene == 1) {
-    drawVerner();
+    int now = frameCount;
+    drawVerner(now);
   }
   
 }
