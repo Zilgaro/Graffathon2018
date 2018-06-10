@@ -140,9 +140,12 @@ void draw1() {
 } 
 
 void draw2(){
- 
   
-    moonlander.update();
+  if(i2==0){
+    cam.rotateX(0.02);
+    cam.rotateY(0.01);
+  }
+ 
   background(0,0,0);
   
     float secs = millis() / 1000.0;
@@ -164,11 +167,8 @@ void draw2(){
         }
         
     //translate(0,0,-i2/100);
-    rotate(TWO_PI/(i2%8));
+    rotate(TWO_PI/((i2%8)+1)*1000);
     
-    
-    
-
     ellipse(0,0,i2/7-j*30,i2/6.6-j*30);
   }
   
