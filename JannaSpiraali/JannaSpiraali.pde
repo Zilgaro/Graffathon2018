@@ -11,7 +11,7 @@ import peasy.*;
 
 PeasyCam cam;
 int i_global;
-private int scene = 0;
+private int scene = 2;
 float r = 250;
 
 Minim minim;
@@ -19,6 +19,9 @@ AudioPlayer song;
 
 int CANVAS_WIDTH = 1920;
 int CANVAS_HEIGHT = 1080;
+
+int i2 = 0;
+int beats = 0;
 
 Moonlander moonlander;
 
@@ -136,6 +139,43 @@ void draw1() {
     i_global++;
 } 
 
+void draw2(){
+ 
+  
+    moonlander.update();
+  background(0,0,0);
+  
+    float secs = millis() / 1000.0;
+  
+  double value =  moonlander.getValue("my_track");
+  
+   if(value==1.0){
+      beats++;
+   }
+   
+   print(beats+" ");
+  
+  for(int j = 0; j <= secs; j++){
+    if(j%4==0){
+      fill(100,100,100);
+    }
+        else {
+        fill(200,100,100);
+        }
+        
+    //translate(0,0,-i2/100);
+    rotate(TWO_PI/(i2%8));
+    
+    
+    
+
+    ellipse(0,0,i2/7-j*30,i2/6.6-j*30);
+  }
+  
+
+ i2++;
+}
+
 void draw() {
   moonlander.update();
   
@@ -146,6 +186,10 @@ void draw() {
   if (scene == 1) {
     int now = frameCount;
     drawVerner(now);
+  }
+  
+  if(scene == 2) {
+    draw2();
   }
   
 }
