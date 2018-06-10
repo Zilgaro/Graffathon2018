@@ -14,6 +14,9 @@ int i_global;
 private int scene = 0;
 float r = 250;
 
+Minim minim;
+AudioPlayer song;
+
 int CANVAS_WIDTH = 1920;
 int CANVAS_HEIGHT = 1080;
 
@@ -23,7 +26,7 @@ void settings() {
   size(CANVAS_WIDTH,CANVAS_HEIGHT,P3D);
 }
 void setup() {
-  moonlander = Moonlander.initWithSoundtrack(this, "data/DestinyDay.mp3", 120, 3);
+  moonlander = Moonlander.initWithSoundtrack(this, "data/DestinyDay.mp3", 120, 7);
   noiseSeed(0);
   colorMode(HSB, 360, 100, 100);
   frameRate(60);
@@ -31,12 +34,16 @@ void setup() {
   cam = new PeasyCam(this, 100);
   cam.setMinimumDistance(50);
   cam.setMaximumDistance(500);
+  minim = new Minim(this);
+  song = minim.loadFile("data/DestinyDay.mp3");
+  song.play();
   moonlander.start();
 }
 
 void drawVerner(int now) {
   
   double value = moonlander.getValue("track1");
+  print(value);
   background(0,0,0);
   //lights();
   stroke(90,90,110);
@@ -70,25 +77,25 @@ void drawVerner(int now) {
       translate(j*(-50) + 50,i*-50,0);
       // j == -5 saa yhden pallon alariviltä scaleemaan!!!
       if ((secs > 2)&&(j == 1)) {
-        scale(noise(millis()), noise(millis()), noise(millis()));
+        scale(noise((float)value), noise((float)value), noise((float)value));
       }
       if ((secs > 3.5)&&(i == -6)) {
-        scale(noise(millis()), noise(millis()), noise(millis()));
+        scale(noise((float)value), noise((float)value), noise((float)value));
       }
       if ((secs > 5)&&(i == -5)) {
-        scale(noise(millis()), noise(millis()), noise(millis()));
+        scale(noise((float)value), noise((float)value), noise((float)value));
       }
       if ((secs > 7.5)&&(i == -4)) {
-        scale(noise(millis()), noise(millis()), noise(millis()));
+        scale(noise((float)value), noise((float)value), noise((float)value));
       }
       if ((secs > 9)&&(i == -3)) {
-        scale(noise(millis()), noise(millis()), noise(millis()));
+        scale(noise((float)value), noise((float)value), noise((float)value));
       }
       if ((secs > 10.5)&&(i == -2)) {
-        scale(noise(millis()), noise(millis()), noise(millis()));
+        scale(noise((float)value), noise((float)value), noise((float)value));
       }
       if ((secs > 12)&&(i == -1)) {
-        scale(noise(millis()), noise(millis()), noise(millis()));
+        scale(noise((float)value), noise((float)value), noise((float)value));
       }
       //translate(i*10*secs,j*10*secs,0);q
       //if (secs > 1) {
@@ -131,6 +138,7 @@ void draw1() {
 
 void draw() {
   moonlander.update();
+  
   if (scene == 0) {
     draw1();
   }

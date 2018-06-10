@@ -1,0 +1,9 @@
+<sync rows="128">
+	<tracks>
+		<track name="track1"/>
+		<track name="tiimalasi"/>
+		<track name="ekaScene"/>
+		<track name="tokaScene"/>
+	</tracks>
+	<bookmarks/>
+</sync>
